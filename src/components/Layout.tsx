@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Watch } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
+import { useRole } from '@/hooks/useRole';
 import { supabase } from '@/integrations/supabase/client';
 
 interface LayoutProps {
@@ -14,6 +15,7 @@ interface LayoutProps {
 export const Layout = ({ children }: LayoutProps) => {
   const { user } = useAuth();
   const { state: cartState } = useCart();
+  const { isAdmin } = useRole();
 
   const handleSignOut = async () => {
     try {
@@ -73,6 +75,14 @@ export const Layout = ({ children }: LayoutProps) => {
               
               {user ? (
                 <div className="flex items-center space-x-3">
+                  {isAdmin && (
+                    <Link to="/admin">
+                      <Button variant="outline" size="sm" className="group hover:scale-105 transition-all duration-300 text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground">
+                        <User className="h-4 w-4 mr-2 group-hover:animate-bounce" />
+                        Admin
+                      </Button>
+                    </Link>
+                  )}
                   <Link to="/profile">
                     <Button variant="outline" size="sm" className="group hover:scale-105 transition-all duration-300">
                       <User className="h-4 w-4 mr-2 group-hover:animate-bounce" />
